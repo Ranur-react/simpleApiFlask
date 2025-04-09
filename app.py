@@ -1,19 +1,8 @@
 from flask import Flask, render_template, request, jsonify
-import pyodbc
+from config import get_db_connection  # import koneksi dari config
 
 app = Flask(__name__)
-# Database COnnections
-def get_db_connection():
-    conn = pyodbc.connect(
-        'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=localhost;'
-        'DATABASE=db_belajar;'
-        'Trusted_Connection=yes;'
-        'UID=sa;PWD=12345678;'
 
-    )
-    return conn
-# Method API
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -38,11 +27,6 @@ def data_handler():
             conn.commit()
             cursor.close()
             conn.close()
-            return jsonify({"message": "Data berhasil disimpan!"}), 201
+            return jsonify({"message": "Data berhasil disimpan dan koneksi sudah diletakan di file config.js!"}), 201
         except Exception as e:
             return jsonify({"error": str(e)}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
