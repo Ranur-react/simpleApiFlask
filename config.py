@@ -17,8 +17,16 @@ MYSQL_HOST = os.getenv("MYSQL_HOST")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
 MYSQL_USER = os.getenv("MYSQL_USER")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
+ENVIRONMENT = os.getenv("ENVIRONMENT")
 
 def get_db_connection():
+    if ENVIRONMENT == 'development':
+        return get_sqlserver_connection()
+    elif ENVIRONMENT == 'Production':
+        return get_mysql_connection()
+    else:
+        raise ValueError("Environment tidak dikenali. Gunakan 'SQLSERVER' atau 'MYSQL'.")
+def get_sqlserver_connection():
     """Koneksi ke SQL Server"""
     if DB_USER and DB_PASSWORD:
         conn_str = (
