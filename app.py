@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 from config import get_db_connection  # import koneksi dari config
-from Corest.test import get_data,insert_data
-from  routes import API_DATA
+from Corest.test import get_data, insert_data
+from Corest.yolo1 import detect_parfum 
+from routes import API_DATA,API_BASE
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -14,6 +16,10 @@ def handle_data():
         return get_data()
     elif request.method == 'POST':
         return insert_data()
+
+@app.route(API_BASE+'/detect-parfum', methods=['POST'])
+def yolo_detect_parfum():
+    return detect_parfum()
 
 if __name__ == '__main__':
     app.run(debug=True)
